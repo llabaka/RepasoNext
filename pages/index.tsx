@@ -3,19 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export default function Home() {
 
   const [workouts, setWorkouts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchWorkouts = async () => {
     try {
@@ -26,8 +17,8 @@ export default function Home() {
       const result = await res.json();
 
       console.log(result.workouts);
-      
-      setWorkouts(result);
+
+      setWorkouts(result.workouts);
 
     } catch (error) {
       console.log(error);
@@ -36,11 +27,15 @@ export default function Home() {
 
   useEffect(() => {
     fetchWorkouts();
-  },[]);
+  }, []);
 
   useEffect(() => {
-    console.log(workouts);
-  },[]);
+    console.log(loading);
+  }, [loading]);
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black-100">
@@ -54,7 +49,7 @@ export default function Home() {
           ))}
         </ul>
       ) : (
-        <Loading/>
+        <Loading />
       )}
     </div>
   );
