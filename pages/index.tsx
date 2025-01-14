@@ -1,12 +1,12 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+// pages/index.tsx
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
-
+import { Workouts } from "@/interfaces/InterfacesWorkouts";
+import WorkoutsContainer from "@/components/WorkoutsContainer";
 export default function Home() {
 
-  const [workouts, setWorkouts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [workouts, setWorkouts] = useState<Workouts[]>();
+  const [loading, setLoading] = useState(true);
 
   const fetchWorkouts = async () => {
     try {
@@ -19,9 +19,10 @@ export default function Home() {
       console.log(result.workouts);
 
       setWorkouts(result.workouts);
-
+      setLoading(false); // Cuando la carga termine, actualizamos el estado
     } catch (error) {
       console.log(error);
+      setLoading(false); // En caso de error, también paramos el loading
     }
   };
 
@@ -29,28 +30,18 @@ export default function Home() {
     fetchWorkouts();
   }, []);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
-
   if (loading) {
-    return <Loading />
-  }
+    return <Loading />;
+  } else {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-black-100 border-white">
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black-100">
-      <h1 className="text-2xl font-bold mb-4">Workouts</h1>
-      {workouts.length > 0 ? (
-        <ul className="text-lg">
-          {workouts.map((workout, index) => (
-            <li key={index} className="mb-2">
-              {workout.name}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <Loading />
-      )}
-    </div>
-  );
+        <h1 className="text-2xl font-bold mb-4 text-white">Workouts</h1>
+
+        <WorkoutsContainer
+          workouts={workouts!}
+        />
+      </div>
+    );
+  }
 }
