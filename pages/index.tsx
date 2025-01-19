@@ -3,10 +3,21 @@ import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 import { Workouts } from "@/interfaces/InterfacesWorkouts";
 import WorkoutsContainer from "@/components/WorkoutsContainer";
+import { io } from "socket.io-client";
 export default function Home() {
 
   const [workouts, setWorkouts] = useState<Workouts[]>();
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const socket = io('http://192.168.1.150:3001')
+
+    socket.on('connection', () => {
+      console.log('Connected to server');
+    });
+
+    socket.emit('userConnected', 'Message sent from client')
+  });
 
   const fetchWorkouts = async () => {
     try {
