@@ -5,7 +5,7 @@ declare global {
     var mongoose: any; // This must be a `var` and not a `let / const`
 }
 
-const DATABASE_URL = 'mongodb+srv://landerlabaka:LabakaAEG%4010%22@clusterlander.tk6ud.mongodb.net/E4P1'
+const DATABASE_URL = process.env.MONGODB_URI;
 
 
 if (!DATABASE_URL) {
@@ -28,7 +28,7 @@ async function connectDB() {
             bufferCommands: false,
         };
 
-        cached.promise = mongoose.connect(DATABASE_URL, opts).then((mongoose) => {
+        cached.promise = mongoose.connect(DATABASE_URL!, opts).then((mongoose) => {
             return mongoose;
         });
     }
