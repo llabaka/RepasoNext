@@ -12,9 +12,10 @@ export default function Home() {
   useEffect(() => {
     const socket = io('http://192.168.1.150:3001')
 
-    socket.on('connection', () => {
-      console.log('Connected to server');
+    socket.on('eyou', (message) => {
+      console.log(message);
     });
+
 
     socket.emit('userConnected', 'Message sent from client')
   });
