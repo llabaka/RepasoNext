@@ -11,6 +11,7 @@ const Filters: React.FC<FiltersInterface> = ({ equipmentFilter, setEquipmentFilt
                 onChange={(e) => setEquipmentFilter(e.target.value)}
                 className="w-64 p-2 border border-gray-300 rounded"
                 placeholder="Enter equipment"
+                data-testid="equipment-filter"
             />
         </div>
     );
