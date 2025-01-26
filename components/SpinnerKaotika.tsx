@@ -1,6 +1,3 @@
-// components/SpinnerKaotika.tsx
-import { Spinner } from "@nextui-org/react";
-
 export const SpinnerKaotika = ({ size, color }: { size: 'sm' | 'md' | 'lg'; color: string }) => {
     const sizeClasses = {
         sm: 'w-5 h-5 border-2 text-small',

@@ -6,6 +6,8 @@ import WorkoutsContainer from "@/components/WorkoutsContainer";
 import { io } from "socket.io-client";
 import { filterByEquipment } from "@/helpers/workoutsHelpers";
 import Filters from "@/components/Filters";
+
+
 export default function Home() {
 
   const [workouts, setWorkouts] = useState<Workout[]>();
