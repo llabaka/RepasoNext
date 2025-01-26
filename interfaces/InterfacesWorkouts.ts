@@ -1,10 +1,10 @@
-export interface Workouts {
+export interface Workout {
     name: string
     mode: string,
     equipment: string[]
 }
 
 export interface WorkoutsContainerInterface {
-    workouts: Workouts[];
+    workouts: Workout[];
 }
 

@@ -1,24 +1,27 @@
 // pages/index.tsx
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
-import { Workouts } from "@/interfaces/InterfacesWorkouts";
+import { Workout } from "@/interfaces/InterfacesWorkouts";
 import WorkoutsContainer from "@/components/WorkoutsContainer";
 import { io } from "socket.io-client";
+import { filterByEquipment } from "@/helpers/workoutsHelpers";
 export default function Home() {
 
-  const [workouts, setWorkouts] = useState<Workouts[]>();
+  const [workouts, setWorkouts] = useState<Workout[]>();
   const [loading, setLoading] = useState(true);
+  const [showingWorkouts, setShowingWorkouts] = useState<Workout[]>();
 
-  useEffect(() => {
-    const socket = io('http://192.168.1.150:3001')
+  //const socket = io('http://192.168.1.150:3001');
 
-    socket.on('eyou', (message) => {
-      console.log(message);
-    });
+  // useEffect(() => {
+
+  //   socket.on('eyou', (message) => {
+  //     console.log(message);
+  //   });
 
 
-    socket.emit('userConnected', 'Message sent from client')
-  });
+  //   socket.emit('userConnected', 'Message sent from client')
+  // });
 
   const fetchWorkouts = async () => {
     try {
@@ -32,6 +35,8 @@ export default function Home() {
 
       setWorkouts(result.workouts);
       setLoading(false); // Cuando la carga termine, actualizamos el estado
+
+      filterWorkouts(result.workouts)
     } catch (error) {
       console.log(error);
       setLoading(false); // En caso de error, también paramos el loading
@@ -42,6 +47,16 @@ export default function Home() {
     fetchWorkouts();
   }, []);
 
+  async function filterWorkouts(workouts: Workout[]) {
+
+    let filteredWorkouts;
+
+    filteredWorkouts = filterByEquipment(workouts, 'AYAYYA')
+
+    setShowingWorkouts(filteredWorkouts)
+  }
+
+
   if (loading) {
     return <Loading />;
   } else {
@@ -51,7 +66,7 @@ export default function Home() {
         <h1 className="text-2xl font-bold mb-4 text-white">Workouts</h1>
 
         <WorkoutsContainer
-          workouts={workouts!}
+          workouts={showingWorkouts!}
         />
       </div>
     );
