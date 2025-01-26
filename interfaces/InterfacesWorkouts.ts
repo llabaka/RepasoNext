@@ -8,3 +8,7 @@ export interface WorkoutsContainerInterface {
     workouts: Workout[];
 }
 
+export interface FiltersInterface {
+    equipmentFilter: string,
+    setEquipmentFilter: (equipment: string) => void;
+}

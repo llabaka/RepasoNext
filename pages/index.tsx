@@ -5,6 +5,7 @@ import { Workout } from "@/interfaces/InterfacesWorkouts";
 import WorkoutsContainer from "@/components/WorkoutsContainer";
 import { io } from "socket.io-client";
 import { filterByEquipment } from "@/helpers/workoutsHelpers";
+import Filters from "@/components/Filters";
 export default function Home() {
 
   const [workouts, setWorkouts] = useState<Workout[]>();
@@ -47,15 +48,13 @@ export default function Home() {
 
   useEffect(() => {
     filterWorkouts(workouts!);
-  },[equipmentFilter])
+  }, [equipmentFilter])
 
   async function filterWorkouts(workouts: Workout[]) {
 
     let filteredWorkouts = workouts;
 
     if (equipmentFilter) {
-      console.log("Ha entrado");
-
       filteredWorkouts = filterByEquipment(workouts, equipmentFilter)
     }
 
@@ -69,18 +68,12 @@ export default function Home() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-black-100 border-white">
 
-        <div className="input-wrapper">
-          <label className="text-lg">Effect:</label>
-          <input
-            type="text"
-            value={equipmentFilter}
-            onChange={(e) => setEquipmentFilter(e.target.value)}
-            className="w-64 p-2 border border-gray-300 rounded"
-            placeholder="Enter effect"
-          />
-        </div>
+        <Filters
+          equipmentFilter={equipmentFilter}
+          setEquipmentFilter={setEquipmentFilter}
+        />
 
-        <h1 className="text-2xl font-bold mb-4 text-white">Workouts</h1>
+        <h1 className="text-2xl font-bold mb-4 text-white mt-2">Workouts</h1>
 
         <WorkoutsContainer
           workouts={showingWorkouts!}
