@@ -10,6 +10,7 @@ export default function Home() {
   const [workouts, setWorkouts] = useState<Workout[]>();
   const [loading, setLoading] = useState(true);
   const [showingWorkouts, setShowingWorkouts] = useState<Workout[]>();
+  const [equipmentFilter, setEquipmentFilter] = useState('');
 
   //const socket = io('http://192.168.1.150:3001');
 
@@ -31,11 +32,8 @@ export default function Home() {
       }
       const result = await res.json();
 
-      console.log(result.workouts);
-
-      setWorkouts(result.workouts);
       setLoading(false); // Cuando la carga termine, actualizamos el estado
-
+      setWorkouts(result.workouts)
       filterWorkouts(result.workouts)
     } catch (error) {
       console.log(error);
@@ -47,11 +45,19 @@ export default function Home() {
     fetchWorkouts();
   }, []);
 
+  useEffect(() => {
+    filterWorkouts(workouts!);
+  },[equipmentFilter])
+
   async function filterWorkouts(workouts: Workout[]) {
 
-    let filteredWorkouts;
+    let filteredWorkouts = workouts;
 
-    filteredWorkouts = filterByEquipment(workouts, 'AYAYYA')
+    if (equipmentFilter) {
+      console.log("Ha entrado");
+
+      filteredWorkouts = filterByEquipment(workouts, equipmentFilter)
+    }
 
     setShowingWorkouts(filteredWorkouts)
   }
@@ -62,6 +68,17 @@ export default function Home() {
   } else {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-black-100 border-white">
+
+        <div className="input-wrapper">
+          <label className="text-lg">Effect:</label>
+          <input
+            type="text"
+            value={equipmentFilter}
+            onChange={(e) => setEquipmentFilter(e.target.value)}
+            className="w-64 p-2 border border-gray-300 rounded"
+            placeholder="Enter effect"
+          />
+        </div>
 
         <h1 className="text-2xl font-bold mb-4 text-white">Workouts</h1>
 
